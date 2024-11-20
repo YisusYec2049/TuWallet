@@ -1,7 +1,8 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import text
+from sqlalchemy import text, func
 from config import Config
+from models.db import Transaction
 
 app = Flask(__name__)
 
@@ -12,6 +13,28 @@ db = SQLAlchemy(app)
 @app.route("/")
 def index():
     return "¡Backend funcionando correctamente!"
+
+@app.route("/balance/<int:user_id>", methods=["GET"])
+def balance(user_id):
+    try:
+        total_deposit = db.session.query(
+            func.sum(Transaction.amount)
+        ).filter(
+            Transaction.user_id == user_id,
+            Transaction.type == 'deposit'
+        ).scalar() or 0
+
+        total_withdraw = db.session.query(
+            func.sum(Transaction.amount)
+        ).filter(
+            Transaction.user_id == user_id,
+            Transaction.type.in_(['withdraw', 'service'])
+        ).scalar() or 0
+
+        balance = total_deposit - total_withdraw
+        return jsonify({"user_id": user_id, "balance": float(balance)})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
     try:

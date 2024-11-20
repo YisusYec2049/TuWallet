@@ -18,7 +18,6 @@ class UsersAPI(Resource):
         parser.add_argument('password', required=True, type=str)
         args = parser.parse_args()
 
-        # Generar el hash de la contraseña
         password_hash = generate_password_hash(args['password'])
         new_user = User(username=args['username'], email=args['email'], password_hash=password_hash)
         db.session.add(new_user)
