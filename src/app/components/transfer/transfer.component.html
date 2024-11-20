@@ -1,0 +1,14 @@
+<div class="transfer">
+    <h2>Retiros y Depósitos</h2>
+    <form>
+      <label for="type">Tipo de Transacción</label>
+      <select id="type" [(ngModel)]="transactionType">
+        <option value="deposit">Depósito</option>
+        <option value="withdraw">Retiro</option>
+      </select>
+      <label for="amount">Monto</label>
+      <input type="number" id="amount" placeholder="Ingresa el monto" />
+      <button type="submit">Confirmar</button>
+    </form>
+  </div>
+  

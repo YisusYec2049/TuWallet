@@ -1,0 +1,11 @@
+<div class="dashboard">
+    <h1>Dashboard</h1>
+    <h2>Transacciones Recientes</h2>
+    <div *ngFor="let transaction of transactions">
+      <p>
+        <strong>{{ transaction.type }}</strong> - 
+        ${{ transaction.amount }}: {{ transaction.description }} ({{ transaction.date }})
+      </p>
+    </div>
+  </div>
+  
